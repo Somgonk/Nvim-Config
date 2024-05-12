@@ -13,7 +13,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    {import = "somgonk.plugins"}
+    { import = "somgonk.plugins" },
+    { import = "somgonk.plugins.editor" },
+    { import = "somgonk.plugins.ui" },
+    { import = "somgonk.plugins.util"},
  }, {
   checker = {
     enabled = true,
@@ -25,3 +28,4 @@ require("lazy").setup({
   },
 })
 
+require("somgonk.config")

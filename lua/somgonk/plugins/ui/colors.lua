@@ -6,5 +6,12 @@ return {
     config = function()
       vim.cmd ([[colorscheme catppuccin]])
     end
+  },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function () 
+      require("colorizer").setup()
+    end
   }
 }
+
