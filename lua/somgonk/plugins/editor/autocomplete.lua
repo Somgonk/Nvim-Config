@@ -45,6 +45,23 @@ return {
           }
         }
       })
+      local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.capabilities)
+
+      -- Set up LSP configuration
+      require('lspconfig').clangd.setup {
+        on_attach = function(client, capabilities2)
+
+          -- Add capabilities specific to nvim-cmp
+          -- (Optional, depending on your needs)
+          capabilities2.textDocument.completion.literalInsertSupport = true
+        end,
+        settings = {
+          clangd = {
+            Path = 'clangd', -- Adjust path if needed
+          },
+        },
+        capabilities = capabilities,
+      }
 
       cmp.setup({
         snippet = {
@@ -67,7 +84,7 @@ return {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = "path" },
-          { name = "codeium" }
+          --{ name = "codeium" }
         }, {
           { name = 'buffer' },
         }),
@@ -101,4 +118,3 @@ return {
     end
   }
 }
-
