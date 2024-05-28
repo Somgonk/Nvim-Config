@@ -1,17 +1,5 @@
 return {
   {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    config = function()
-      require("codeium").setup({
-        enable_chat = true
-      })
-    end
-  },
-  {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-cmdline",
