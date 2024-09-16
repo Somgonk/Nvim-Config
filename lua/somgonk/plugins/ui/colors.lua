@@ -8,6 +8,9 @@ return {
     end
   },
   {
+    "ellisonleao/gruvbox.nvim",
+  },
+  {
     "norcalli/nvim-colorizer.lua",
     config = function () 
       require("colorizer").setup()

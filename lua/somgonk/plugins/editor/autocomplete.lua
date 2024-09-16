@@ -1,108 +1,37 @@
 return {
   {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-      "neovim/nvim-lspconfig",
-      "folke/neodev.nvim"
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
     },
-    config = function()
-      local cmp = require("cmp")
-
-      require("neodev").setup()
-      require("mason").setup()
-      require("mason-lspconfig").setup {
-        ensure_installed = { "lua_ls", "clangd" }
-      }
-      require("lspconfig").lua_ls.setup({
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = "Replace",
-            },
-            diagnostics = {
-              disable = { "trailing-space" },
-            },
-          }
-        }
+  },
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+  {                                        -- optional completion source for require statements and module annotations
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
       })
-      local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.capabilities)
-
-      -- Set up LSP configuration
-      require('lspconfig').clangd.setup {
-        on_attach = function(client, capabilities2)
-
-          -- Add capabilities specific to nvim-cmp
-          -- (Optional, depending on your needs)
-          capabilities2.textDocument.completion.literalInsertSupport = true
-        end,
-        settings = {
-          clangd = {
-            Path = 'clangd', -- Adjust path if needed
-          },
-        },
-        capabilities = capabilities,
-      }
-
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end
-        },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = "path" },
-          --{ name = "codeium" }
-        }, {
-          { name = 'buffer' },
-        }),
-      })
-
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' }
-        }, {
-          { name = 'cmdline' }
-        }),
-        matching = {
-          disallow_symbol_nonprefix_matching = false,
-          disallow_fuzzy_matching = false,
-          disallow_partial_matching = true,
-          disallow_prefix_unmatching = true,
-          disallow_fullfuzzy_matching = true,
-          disallow_partial_fuzzy_matching = false
-        }
-      })
-    end
+    end,
   },
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = function()
       require("nvim-autopairs").setup({
-        enable_check_bracket_line = false
+        enable_check_bracket_line = false 
       })
     end
-  }
+  },
+  {
+    'vidocqh/auto-indent.nvim',
+    opts = {},
+  },
 }
